@@ -94,10 +94,31 @@
           transform 4300ms cubic-bezier(0.16, 0.84, 0.18, 1) 420ms,
           opacity 900ms ease 620ms,
           filter 4300ms ease 420ms;
+        touch-action: pan-y;
+      }
+
+      .close-card {
+        position: absolute;
+        top: 18px;
+        right: 18px;
+        z-index: 12;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        border: 2px solid var(--gold);
+        border-radius: 50%;
+        color: var(--cream);
+        background: var(--black);
+        cursor: pointer;
+        font: 800 1.25rem/1 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        box-shadow: 0 8px 18px rgba(20, 11, 6, 0.28);
       }
 
       .card-frame {
         padding: 112px 70px 66px;
+        touch-action: pan-y;
         background:
           url("assets/template-card.png") center / 100% 100% no-repeat,
           var(--cream);
@@ -116,6 +137,7 @@
           linear-gradient(120deg, rgba(255, 255, 255, 0.22), transparent 20%, rgba(75, 47, 31, 0.08) 92%),
           var(--parchment);
         background-size: 180px 180px, 210px 210px, 170px 170px, 150px 150px, auto, auto;
+        touch-action: pan-y;
       }
 
       .top-verse,
@@ -463,6 +485,10 @@
         transform: translateX(-50%) translateY(-254px) scale(1);
       }
 
+      .scene.is-open .close-card {
+        display: inline-flex;
+      }
+
       .scene.is-open .flap {
         animation: flap-open-close 4300ms cubic-bezier(0.2, 0.76, 0.18, 1) forwards;
       }
@@ -511,6 +537,14 @@
           width: min(91vw, 430px);
           max-height: 650px;
           transform: translateX(-50%) translateY(245px) scale(0.88);
+        }
+
+        .close-card {
+          top: 12px;
+          right: 12px;
+          width: 34px;
+          height: 34px;
+          font-size: 1.05rem;
         }
 
         .scene.is-open .card {
@@ -627,6 +661,7 @@
       <section class="stage" aria-label="Muluken and Bezawit wedding invitation">
         <div class="scene" id="invitation">
           <article class="card" aria-live="polite">
+            <button class="close-card" type="button" aria-label="Close the wedding card">&times;</button>
             <div class="card-frame">
               <div class="card-inner">
                 <p class="top-verse">
@@ -727,6 +762,7 @@
     <script>
       const scene = document.querySelector("#invitation");
       const card = document.querySelector(".card");
+      const closeCard = document.querySelector(".close-card");
       const envelope = document.querySelector(".envelope");
       const seal = document.querySelector(".seal");
       const weddingSong = document.querySelector("#weddingSong");
@@ -769,17 +805,17 @@
         openInvitation();
       });
 
+      closeCard.addEventListener("click", (event) => {
+        event.stopPropagation();
+        closeInvitation();
+      });
+
       scene.addEventListener("click", (event) => {
         if (!scene.classList.contains("is-open")) {
           return;
         }
 
         if (seal.contains(event.target)) {
-          return;
-        }
-
-        if (window.matchMedia("(max-width: 680px)").matches && card.contains(event.target)) {
-          closeInvitation();
           return;
         }
 

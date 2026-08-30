@@ -534,7 +534,8 @@
           height: 720px;
         }
 
-        .scene.is-open {
+        .scene.is-open,
+        .scene.is-closing {
           height: 1180px;
         }
 
@@ -562,6 +563,15 @@
           max-height: none;
           overflow: visible;
           transform: translateX(-50%) translateY(0) scale(1);
+        }
+
+        .scene.is-closing .card {
+          max-height: none;
+          overflow: visible;
+          transition:
+            transform 4300ms cubic-bezier(0.16, 0.84, 0.18, 1) 420ms,
+            opacity 500ms ease 2400ms,
+            filter 4300ms ease 420ms;
         }
 
         .card-frame {
@@ -780,6 +790,7 @@
       let audioStarted = false;
       let cardOutTimer;
       let scrollTimer;
+      let closingTimer;
 
       function playWeddingSong() {
         if (audioStarted) {
@@ -801,6 +812,8 @@
       function openInvitation() {
         window.clearTimeout(cardOutTimer);
         window.clearTimeout(scrollTimer);
+        window.clearTimeout(closingTimer);
+        scene.classList.remove("is-closing");
         scene.classList.remove("is-card-out");
         scene.classList.add("is-open");
         seal.setAttribute("aria-label", "Wedding card opened");
@@ -820,6 +833,8 @@
       function closeInvitation() {
         window.clearTimeout(cardOutTimer);
         window.clearTimeout(scrollTimer);
+        window.clearTimeout(closingTimer);
+        scene.classList.add("is-closing");
         scene.classList.remove("is-card-out");
         scene.classList.remove("is-open");
         seal.setAttribute("aria-label", "Open the wedding card");
@@ -827,6 +842,10 @@
         weddingSong.currentTime = 0;
         audioStarted = false;
         history.replaceState(null, "", window.location.pathname);
+
+        closingTimer = window.setTimeout(() => {
+          scene.classList.remove("is-closing");
+        }, 5200);
       }
 
       seal.addEventListener("click", (event) => {

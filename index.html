@@ -78,21 +78,22 @@
         position: absolute;
         left: 50%;
         bottom: 72px;
-        z-index: 8;
+        z-index: 4;
         width: min(88vw, 560px);
         max-height: min(78vh, 720px);
         padding: 0;
         overflow: auto;
         opacity: 0;
         pointer-events: none;
-        transform: translateX(-50%) translateY(255px) scale(0.91);
+        transform: translateX(-50%) translateY(330px) scale(0.88);
         border: 0;
         border-radius: 2px;
         background: transparent;
         box-shadow: 0 34px 72px var(--shadow);
         transition:
-          transform 2600ms cubic-bezier(0.16, 0.82, 0.16, 1) 420ms,
-          opacity 1000ms ease 520ms;
+          transform 4300ms cubic-bezier(0.16, 0.84, 0.18, 1) 420ms,
+          opacity 900ms ease 620ms,
+          filter 4300ms ease 420ms;
       }
 
       .card-frame {
@@ -377,7 +378,7 @@
         background:
           linear-gradient(135deg, rgba(255, 255, 255, 0.16), transparent 42%),
           linear-gradient(180deg, #c99a55 0%, #76502b 100%);
-        transition: transform 1900ms cubic-bezier(0.2, 0.76, 0.18, 1);
+        transition: transform 1200ms cubic-bezier(0.2, 0.76, 0.18, 1);
       }
 
       .seal {
@@ -463,7 +464,7 @@
       }
 
       .scene.is-open .flap {
-        transform: rotateX(178deg);
+        animation: flap-open-close 4300ms cubic-bezier(0.2, 0.76, 0.18, 1) forwards;
       }
 
       .scene.is-open .seal {
@@ -509,15 +510,13 @@
           bottom: 76px;
           width: min(91vw, 430px);
           max-height: 650px;
-          transform: translateX(-50%) translateY(205px) scale(0.91);
+          transform: translateX(-50%) translateY(245px) scale(0.88);
         }
 
         .scene.is-open .card {
-          top: 18px;
-          bottom: auto;
           max-height: none;
           overflow: visible;
-          transform: translateX(-50%) scale(1);
+          transform: translateX(-50%) translateY(-188px) scale(1);
         }
 
         .card-frame {
@@ -601,6 +600,24 @@
         .seal,
         .hint {
           transition: none;
+        }
+      }
+
+      @keyframes flap-open-close {
+        0% {
+          transform: rotateX(0deg);
+        }
+
+        28% {
+          transform: rotateX(178deg);
+        }
+
+        70% {
+          transform: rotateX(178deg);
+        }
+
+        100% {
+          transform: rotateX(0deg);
         }
       }
     </style>

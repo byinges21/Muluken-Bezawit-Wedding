@@ -533,10 +533,11 @@
         }
 
         .card {
-          bottom: 76px;
+          top: 18px;
+          bottom: auto;
           width: min(91vw, 430px);
           max-height: 650px;
-          transform: translateX(-50%) translateY(245px) scale(0.88);
+          transform: translateX(-50%) translateY(470px) scale(0.88);
         }
 
         .close-card {
@@ -550,7 +551,7 @@
         .scene.is-open .card {
           max-height: none;
           overflow: visible;
-          transform: translateX(-50%) translateY(-188px) scale(1);
+          transform: translateX(-50%) translateY(0) scale(1);
         }
 
         .card-frame {
@@ -789,6 +790,12 @@
         scene.classList.add("is-open");
         seal.setAttribute("aria-label", "Wedding card opened");
         playWeddingSong();
+
+        if (window.matchMedia("(max-width: 680px)").matches) {
+          window.setTimeout(() => {
+            card.scrollIntoView({ behavior: "smooth", block: "start" });
+          }, 450);
+        }
       }
 
       function closeInvitation() {

@@ -343,6 +343,7 @@
         background: transparent;
         cursor: pointer;
         filter: drop-shadow(0 32px 42px var(--shadow));
+        transition: opacity 600ms ease;
       }
 
       .envelope::before {
@@ -502,6 +503,11 @@
         opacity: 0;
       }
 
+      .scene.is-card-out .envelope {
+        opacity: 0;
+        pointer-events: none;
+      }
+
       @media (min-width: 720px) {
         .invite-copy {
           grid-template-columns: 1fr 1fr;
@@ -537,7 +543,11 @@
           bottom: auto;
           width: min(91vw, 430px);
           max-height: 650px;
-          transform: translateX(-50%) translateY(470px) scale(0.88);
+          transform: translateX(-50%) translateY(560px) scale(0.88);
+          transition:
+            transform 4300ms cubic-bezier(0.16, 0.84, 0.18, 1) 420ms,
+            opacity 900ms ease 1500ms,
+            filter 4300ms ease 420ms;
         }
 
         .close-card {
@@ -768,6 +778,8 @@
       const seal = document.querySelector(".seal");
       const weddingSong = document.querySelector("#weddingSong");
       let audioStarted = false;
+      let cardOutTimer;
+      let scrollTimer;
 
       function playWeddingSong() {
         if (audioStarted) {
@@ -787,18 +799,28 @@
       }
 
       function openInvitation() {
+        window.clearTimeout(cardOutTimer);
+        window.clearTimeout(scrollTimer);
+        scene.classList.remove("is-card-out");
         scene.classList.add("is-open");
         seal.setAttribute("aria-label", "Wedding card opened");
         playWeddingSong();
 
         if (window.matchMedia("(max-width: 680px)").matches) {
-          window.setTimeout(() => {
+          scrollTimer = window.setTimeout(() => {
             card.scrollIntoView({ behavior: "smooth", block: "start" });
-          }, 450);
+          }, 1700);
         }
+
+        cardOutTimer = window.setTimeout(() => {
+          scene.classList.add("is-card-out");
+        }, 4300);
       }
 
       function closeInvitation() {
+        window.clearTimeout(cardOutTimer);
+        window.clearTimeout(scrollTimer);
+        scene.classList.remove("is-card-out");
         scene.classList.remove("is-open");
         seal.setAttribute("aria-label", "Open the wedding card");
         weddingSong.pause();

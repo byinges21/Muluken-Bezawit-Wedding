@@ -60,7 +60,7 @@
       }
 
       .stage {
-        width: min(94vw, 880px);
+        width: min(98vw, 1240px);
         min-height: 850px;
         display: grid;
         place-items: center;
@@ -68,7 +68,7 @@
       }
 
       .scene {
-        width: min(94vw, 800px);
+        width: min(98vw, 1180px);
         height: 760px;
         position: relative;
         perspective: 1400px;
@@ -79,10 +79,12 @@
         left: 50%;
         bottom: 72px;
         z-index: 4;
-        width: min(88vw, 560px);
-        max-height: min(78vh, 720px);
+        width: min(96vw, 1040px);
+        max-height: min(78vh, 650px);
         padding: 0;
         overflow: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
         opacity: 0;
         pointer-events: none;
         transform: translate3d(-50%, 330px, 0) scale(0.88);
@@ -93,7 +95,7 @@
         transition:
           transform 3400ms cubic-bezier(0.18, 0.86, 0.22, 1) 160ms,
           opacity 700ms ease 260ms;
-        touch-action: pan-y;
+        touch-action: pan-x pan-y;
         will-change: transform, opacity;
       }
 
@@ -117,27 +119,38 @@
       }
 
       .card-frame {
-        padding: 112px 70px 66px;
-        touch-action: pan-y;
+        aspect-ratio: 1.78 / 1;
+        padding: 120px 132px 48px;
+        touch-action: pan-x pan-y;
         background:
-          url("assets/template-card.png") center / 100% 100% no-repeat,
-          var(--cream);
+          url("assets/gold-floral-card-background-landscape.png") center / 100% 100% no-repeat,
+          #f8f4e8;
       }
 
       .card-inner {
-        min-height: 620px;
-        padding: 18px 20px 24px;
+        position: relative;
+        --center-photo-bottom: 34px;
+        --center-photo-size: 104px;
+        height: 100%;
+        min-height: 0;
+        padding: 0;
         text-align: center;
-        border: 2px solid rgba(12, 9, 7, 0.9);
-        background:
-          radial-gradient(circle at 17% 14%, rgba(92, 50, 27, 0.16) 0 1px, transparent 2px),
-          radial-gradient(circle at 78% 21%, rgba(92, 50, 27, 0.13) 0 2px, transparent 3px),
-          radial-gradient(circle at 72% 78%, rgba(92, 50, 27, 0.16) 0 2px, transparent 3px),
-          radial-gradient(circle at 28% 72%, rgba(92, 50, 27, 0.11) 0 1px, transparent 2px),
-          linear-gradient(120deg, rgba(255, 255, 255, 0.22), transparent 20%, rgba(75, 47, 31, 0.08) 92%),
-          var(--parchment);
-        background-size: 180px 180px, 210px 210px, 170px 170px, 150px 150px, auto, auto;
-        touch-action: pan-y;
+        border: 0;
+        color: #aa7b2d;
+        background: transparent;
+        touch-action: pan-x pan-y;
+      }
+
+      .card-inner::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: calc(var(--center-photo-bottom) + var(--center-photo-size));
+        z-index: 1;
+        width: 1px;
+        transform: translateX(-50%);
+        background: rgba(178, 130, 47, 0.42);
       }
 
       .top-verse,
@@ -201,6 +214,42 @@
         text-align: left;
       }
 
+      .invite-copy.formal {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 118px;
+        height: 100%;
+        margin: 0 auto;
+        align-items: start;
+        text-align: center;
+      }
+
+      .center-photo {
+        position: absolute;
+        left: 50%;
+        bottom: var(--center-photo-bottom);
+        z-index: 2;
+        width: var(--center-photo-size);
+        aspect-ratio: 1;
+        margin: 0;
+        overflow: hidden;
+        border: 3px solid rgba(178, 130, 47, 0.86);
+        border-radius: 50%;
+        transform: translateX(-50%);
+        box-shadow:
+          0 10px 22px rgba(90, 58, 17, 0.24),
+          inset 0 0 0 3px rgba(255, 247, 225, 0.68);
+        background: #f6edd8;
+        pointer-events: none;
+      }
+
+      .center-photo img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
       .amharic,
       .english {
         margin: 0;
@@ -213,13 +262,87 @@
       }
 
       .english {
-        color: #2b2119;
+        color: #a7772b;
+      }
+
+      .formal .amharic,
+      .formal .english {
+        font-size: 0.55rem;
+        line-height: 1.31;
+      }
+
+      .formal .english {
+        order: 1;
+        margin-top: 0;
+        padding-top: 0;
+        padding-right: 22px;
+        transform: translateY(14px);
+        border-top: 0;
+      }
+
+      .formal .amharic {
+        order: 2;
+        padding-left: 0;
+        padding-top: 18px;
       }
 
       .amharic strong,
       .english strong {
-        color: #111;
+        color: #9f6f23;
         font-weight: 800;
+      }
+
+      .wedding-title {
+        margin: 0 0 12px;
+        color: #a7782b;
+        font-family: "Noto Serif Ethiopic", "Nyala", "Kefa", Georgia, serif;
+        font-size: clamp(2rem, 4vw, 3rem);
+        line-height: 1;
+      }
+
+      .english-title {
+        display: block;
+        margin: 0 0 12px;
+        color: #a7782b;
+        font-family: "Snell Roundhand", "Brush Script MT", "Segoe Script", Georgia, serif;
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 500;
+        line-height: 0.95;
+      }
+
+      .scripture {
+        display: block;
+        margin: 0 auto 12px;
+        color: #9c6e25;
+        font-size: 0.48rem;
+        line-height: 1.25;
+      }
+
+      .english .scripture {
+        margin-bottom: 5px;
+      }
+
+      .name-stack {
+        display: block;
+        margin: 10px auto;
+        color: #9f6f23;
+        font-size: 0.68rem;
+        font-weight: 800;
+        line-height: 1.38;
+      }
+
+      .address-block {
+        display: block;
+        margin-top: 11px;
+        color: #21170f;
+        font-size: 0.7rem;
+        line-height: 1.45;
+      }
+
+      .address-block strong {
+        display: block;
+        color: var(--coffee);
+        font-size: 0.68rem;
       }
 
       .details {
@@ -349,10 +472,23 @@
       .envelope::before {
         content: "";
         position: absolute;
-        inset: -18px;
+        inset: -10px;
         z-index: 20;
-        border: 18px solid transparent;
-        border-image: url("assets/template-card.png") 68 / 18px / 0 round;
+        border: 3px solid rgba(177, 125, 38, 0.82);
+        box-shadow:
+          inset 0 0 0 2px rgba(255, 247, 225, 0.62),
+          0 0 0 1px rgba(126, 83, 22, 0.24);
+        pointer-events: none;
+      }
+
+      .envelope::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 10;
+        background: url("assets/gold-floral-card-background-landscape.png") center / cover no-repeat;
+        opacity: 0.58;
+        mix-blend-mode: soft-light;
         pointer-events: none;
       }
 
@@ -369,7 +505,9 @@
       .pocket {
         border-radius: 0 0 10px 10px;
         overflow: hidden;
-        background: linear-gradient(180deg, #b98541 0%, #8f6131 48%, #5d3a1e 100%);
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.26), transparent 38%),
+          linear-gradient(180deg, #ead7af 0%, #cda45d 48%, #9d712f 100%);
       }
 
       .pocket::before {
@@ -378,20 +516,24 @@
 
       .side-left {
         clip-path: polygon(0 0, 52% 57%, 0 100%);
-        background: linear-gradient(130deg, #c2924d, #7d4f27 68%);
+        background:
+          linear-gradient(130deg, rgba(255, 255, 255, 0.28), transparent 36%),
+          linear-gradient(130deg, #f1deb8, #b9893d 68%);
       }
 
       .side-right {
         clip-path: polygon(100% 0, 48% 57%, 100% 100%);
-        background: linear-gradient(230deg, #b88443, #68401f 72%);
+        background:
+          linear-gradient(230deg, rgba(255, 255, 255, 0.24), transparent 36%),
+          linear-gradient(230deg, #e7cf9c, #a27432 72%);
       }
 
       .bottom-fold {
         z-index: 3;
         clip-path: polygon(0 100%, 50% 42%, 100% 100%);
         background:
-          linear-gradient(90deg, rgba(240, 194, 100, 0.22), transparent 28%, transparent 72%, rgba(240, 194, 100, 0.18)),
-          linear-gradient(180deg, #91602e 0%, #4d2d15 100%);
+          linear-gradient(90deg, rgba(255, 244, 208, 0.38), transparent 28%, transparent 72%, rgba(255, 244, 208, 0.3)),
+          linear-gradient(180deg, #d2a75a 0%, #95692d 100%);
       }
 
       .flap {
@@ -399,8 +541,8 @@
         transform-origin: top center;
         clip-path: polygon(0 0, 50% 68%, 100% 0);
         background:
-          linear-gradient(135deg, rgba(255, 255, 255, 0.16), transparent 42%),
-          linear-gradient(180deg, #c99a55 0%, #76502b 100%);
+          linear-gradient(135deg, rgba(255, 255, 255, 0.34), transparent 42%),
+          linear-gradient(180deg, #f0d9aa 0%, #bd9148 100%);
         transition: transform 1200ms cubic-bezier(0.2, 0.76, 0.18, 1);
       }
 
@@ -431,9 +573,9 @@
         z-index: 11;
         width: min(72%, 390px);
         transform: translate(-50%, -50%);
-        color: rgba(255, 248, 230, 0.9);
+        color: rgba(111, 73, 22, 0.95);
         text-align: center;
-        text-shadow: 0 2px 4px rgba(27, 14, 8, 0.4);
+        text-shadow: 0 1px 2px rgba(255, 252, 239, 0.72);
         pointer-events: none;
       }
 
@@ -483,7 +625,7 @@
       .scene.is-open .card {
         opacity: 1;
         pointer-events: auto;
-        transform: translate3d(-50%, -254px, 0) scale(1);
+        transform: translate3d(-50%, -210px, 0) scale(1);
       }
 
       .scene.is-open .close-card {
@@ -523,20 +665,22 @@
         }
 
         .page {
-          padding: 18px 10px 34px;
+          min-height: auto;
+          place-items: start center;
+          padding: 18px 10px 80px;
         }
 
         .stage {
-          min-height: 790px;
+          min-height: 820px;
         }
 
         .scene {
-          height: 720px;
+          height: 730px;
           overflow: hidden;
         }
 
         .scene.is-open {
-          height: 1180px;
+          height: 930px;
           overflow: visible;
         }
 
@@ -548,8 +692,10 @@
         .card {
           top: 18px;
           bottom: auto;
-          width: min(91vw, 430px);
-          max-height: 650px;
+          width: min(96vw, 1040px);
+          max-height: 76vh;
+          overflow-x: auto;
+          overflow-y: auto;
           transform: translate3d(-50%, 560px, 0) scale(0.88);
           transition:
             transform 3400ms cubic-bezier(0.18, 0.86, 0.22, 1) 160ms,
@@ -565,26 +711,32 @@
         }
 
         .scene.is-open .card {
-          max-height: none;
-          overflow: visible;
+          max-height: calc(100vh - 34px);
+          overflow: auto;
           transform: translate3d(-50%, 0, 0) scale(1);
         }
 
         .scene.is-closing .card {
           max-height: none;
-          overflow: visible;
+          overflow: hidden;
           transition:
             transform 3200ms cubic-bezier(0.18, 0.86, 0.22, 1) 120ms,
             opacity 450ms ease 1000ms;
         }
 
         .card-frame {
-          padding: 88px 54px 52px;
+          aspect-ratio: 1.78 / 1;
+          min-width: 920px;
+          padding: 104px 104px 34px;
+          background-size: 100% 100%;
         }
 
         .card-inner {
-          min-height: 570px;
-          padding: 14px 13px 18px;
+          --center-photo-bottom: 26px;
+          --center-photo-size: 86px;
+          height: 100%;
+          min-height: 0;
+          padding: 0;
         }
 
         .top-verse,
@@ -601,6 +753,64 @@
         .english {
           font-size: 0.68rem;
           line-height: 1.42;
+        }
+
+        .formal .amharic,
+        .formal .english {
+          font-size: 0.5rem;
+          line-height: 1.28;
+        }
+
+        .invite-copy.formal {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+          gap: 92px;
+          height: 100%;
+        }
+
+        .center-photo {
+          bottom: var(--center-photo-bottom);
+          width: var(--center-photo-size);
+        }
+
+        .formal .english {
+          padding-right: 16px;
+          padding-bottom: 0;
+          transform: translateY(12px);
+          border-bottom: 0;
+        }
+
+        .formal .amharic {
+          padding-left: 0;
+          padding-top: 20px;
+        }
+
+        .wedding-title {
+          margin-bottom: 6px;
+          font-size: 1.9rem;
+        }
+
+        .english-title {
+          margin-bottom: 6px;
+          font-size: 1.9rem;
+        }
+
+        .scripture {
+          margin-bottom: 5px;
+          font-size: 0.42rem;
+          line-height: 1.18;
+        }
+
+        .name-stack {
+          margin: 5px auto;
+          font-size: 0.58rem;
+          line-height: 1.32;
+        }
+
+        .address-block {
+          margin-top: 8px;
+          font-size: 0.56rem;
+          line-height: 1.32;
         }
 
         .details p {
@@ -689,75 +899,80 @@
             <button class="close-card" type="button" aria-label="Close the wedding card">&times;</button>
             <div class="card-frame">
               <div class="card-inner">
-                <p class="top-verse">
-                  <strong>Genesis 2:24</strong>
-                  “ስለዚህ ሰው አባቱንና እናቱን ይተዋል፥ በሚስቱም ይጣበቃል፤
-                  ሁለቱም አንድ ሥጋ ይሆናሉ።”
-                  <br />
-                  Therefore a man shall leave his father and his mother and hold fast to his wife,
-                  and they shall become one flesh.
-                </p>
-
-                <h1>
-                  Muluken Dagne
-                  <span class="amp">&amp;</span>
-                  Bezawit Kibru
-                </h1>
-
-                <figure class="couple-image">
-                  <img src="assets/couple-no-beard-sharp-nose-cutout.png" alt="Illustration of Muluken and Bezawit in traditional Ethiopian wedding attire" />
+                <figure class="center-photo" aria-hidden="true">
+                  <img src="assets/rings-bible-circle-source.png" alt="" />
                 </figure>
 
-                <div class="invite-copy">
+                <div class="invite-copy formal">
                   <p class="amharic">
-                    ክቡር/ክብርት የክብር እንግዳችን፤
+                    <strong class="wedding-title">ሠርግ</strong>
+                    <span class="scripture">
+                      «ስለዚህ ሰው አባቱንና እናቱን ይተዋል፤ ከሚስቱም ጋር ይተባበራል፤
+                      ሁለቱም አንድ ሥጋ ይሆናሉ…ስለዚህ አንድ ሥጋ ናቸው እንጂ ወደ ፊት
+                      ሁለት አይደሉም። እግዚአብሔር ያጣመረውን እንግዲህ ሰው አይለየው» ማቴ 19:5-6
+                    </span>
+
+                    የማክበር ሰላምታችንን እያቀረብን የልጆቻችንን
                     <br /><br />
-                    በፈቃደ እግዚአብሔርና በወላጆቻችን ፈቃድ እኛ <strong>ሙሉቀን ዳኜ</strong> እና <strong>ቤዛዊት ክብሩ</strong>
-                    የትዳር ሕይወታችንን በሥርዓተ ቤተ ክርስቲያን ለመጀመር ተዘጋጅተናል።
-                    በዚህ ቅዱስ ቀን በቦታው ተገኝተው ደስታችንን እንዲያደምቁልንና
-                    በጸሎትዎ እንዲያግዙን በአክብሮት ተጋብዘዋል።
+                    <span class="name-stack">
+                      የአቶ ሙሉቀን ዳኜ<br />
+                      እና<br />
+                      የወ/ሪት ቤዛዊት ክብሩ
+                    </span>
+                    ጋብቻ በቤተክርስቲያን ሥነ-ሥርዓት የሚፈጸመው
+                    <br />
+                    እሑድ ሕዳር 6 ቀን 2019 ዓ.ም.
+                    <br />
+                    Sunday, November 15, 2026
+                    <br /><br />
+                    ስለሆነ፤ በዚሁ ዕለት ከጠዋቱ 4:00 AM
+                    <br />
+                    በደብረ መድኃኒት ኢየሱስ የኢትዮጵያ ተዋሕዶ ቤተ ክርስቲያን
+                    <br />
+                    <strong>13450 Minnieville Rd, Woodbridge, VA 22192</strong>
+                    <br />
+                    <br />
+                    እንዲሁም ከሰዓት በ4 PM
+                    <br />
+                    በ<strong>2148 Gallows Road, Dunn Loring, VA 22027</strong>
+                    <br />
+                    በሚደረገው የሠርግ ግብዣ ላይ ተገኝተው የደስታችን ተካፋይ ይሆኑ ዘንድ
+                    በአክብሮት ጠርተንዎታል።
+                    <br /><br />
+                    ቤተሰቦቻቸው
                   </p>
 
                   <p class="english">
-                    Dear Honored Guest,
+                    <strong class="english-title">Wedding</strong>
+                    <span class="scripture">
+                      “Therefore a man shall leave his father and mother and be joined to his wife,
+                      and the two shall become one flesh... So then, they are no longer two but one flesh.
+                      Therefore what God has joined together, let not man separate.” Matthew 19:5-6
+                    </span>
+                    With warm greetings and great honor, we invite you to celebrate the marriage of our children
                     <br /><br />
-                    By the grace of God and with the blessing of our parents, we,
-                    <strong>Muluken Dagne</strong> and <strong>Bezawit Kibru</strong>, joyfully invite you to celebrate
-                    the beginning of our life together in holy matrimony. Your presence and prayers
-                    on this blessed day would bring us great joy.
-                  </p>
-                </div>
-
-                <div class="details">
-                  <p>
-                    <strong>Date</strong>
-                    Sunday, November 15, 2026<br />
-                    እሑድ ሕዳር 6 ቀን 2019 ዓ.ም.
-                  </p>
-                  <p>
-                    <strong>Ceremony</strong>
+                    <strong>Muluken Dagne</strong>
+                    <br />
+                    and
+                    <br />
+                    <strong>Bezawit Kibru</strong>
+                    <br /><br />
+                    The marriage ceremony will be solemnized in holy matrimony on Sunday, November 15, 2026
+                    (Hidar 6, 2019 E.C.)
+                    <br /><br />
+                    Please join us at 4:00 AM for the church ceremony at
+                    <br />
                     Debre Medehanit Eyesus Ethiopian Orthodox Tewahedo Church
-                  </p>
-                  <p>
-                    <strong>Location</strong>
-                    13450 Minnieville Rd, Woodbridge, VA 22192
-                  </p>
-                  <p>
-                    <strong>Dinner</strong>
-                    4:00 PM - 9:00 PM
+                    <br />
+                    <strong>13450 Minnieville Rd, Woodbridge, VA 22192</strong>
+                    <br /><br />
+                    and at 4:00 PM for the wedding reception at
+                    <br />
+                    <strong>2148 Gallows Road, Dunn Loring, VA 22027</strong>.
+                    <br /><br />
+                    We respectfully invite you to be part of our joy on this special day.
                   </p>
                 </div>
-
-                <p class="closing">በመገኘትዎ ደስታችን ፍጹም ይሆናል!</p>
-
-                <p class="bottom-verse">
-                  <strong>Matthew 19:6</strong>
-                  “ስለዚህ አንድ ሥጋ ናቸው እንጂ ወደፊት ሁለት አይደሉም።
-                  እግዚአብሔር ያጣመረውን እንግዲህ ሰው አይለየው።”
-                  <br />
-                  So they are no longer two, but one flesh. What therefore God has joined together,
-                  let not man separate.
-                </p>
               </div>
             </div>
           </article>
@@ -826,6 +1041,7 @@
         if (window.matchMedia("(max-width: 680px)").matches) {
           scrollTimer = window.setTimeout(() => {
             card.scrollIntoView({ behavior: "smooth", block: "start" });
+            card.scrollLeft = Math.max(0, (card.scrollWidth - card.clientWidth) / 2);
           }, 900);
         }
 
